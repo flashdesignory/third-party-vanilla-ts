@@ -18,6 +18,8 @@ const App = () => {
                 'time': new Date(),
             });
             window.gtag("event", "foo", {});
+            window.gtag("event", "foo");
+            window.gtag("event", "foo", {"something": "foo"})
         }, 
         onError: () => {
             state.textContent = `Current state: ${getStatus()}`;
