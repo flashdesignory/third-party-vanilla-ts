@@ -75,7 +75,7 @@ export function useThirdPartyCapital({ type, id, onSuccess, onError}: ThirdParty
     }
 
     switch(type) {
-        case "gtm":
+        case "ga":
             initGoogleAnalytics(id).then((state: ThirdPartyCapitalState) => {
                 status = state.success ? "ready" : "error";
                 onSuccess?.();

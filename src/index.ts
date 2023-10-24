@@ -10,7 +10,7 @@ declare global {
 
 const App = () => {
     const { getStatus } = useThirdPartyCapital({ 
-        type: "gtm", 
+        type: "ga", 
         id: "G-MMQSNF1HQ5", 
         onSuccess: () => {
             state.textContent = `Current state: ${getStatus()}`;
@@ -26,6 +26,7 @@ const App = () => {
         }
     });
 
+    // fluff
     const div = document.createElement("div");
     div.classList.add("content");
     
