@@ -17,9 +17,9 @@ const App = () => {
             window.gtag('event', 'newsletter_signup', {
                 'time': new Date(),
             });
-            window.gtag("event", "foo", {});
-            window.gtag("event", "foo");
-            window.gtag("event", "foo", {"something": "foo"})
+            window.gtag("event", "sign_up", {timestamp: Date.now()});
+            window.gtag("event", "login");
+            window.gtag("event", "something_random", {"favorite_fod": "ramen"})
         }, 
         onError: () => {
             state.textContent = `Current state: ${getStatus()}`;
