@@ -36,6 +36,7 @@ function buildScript(scriptEl: HTMLScriptElement, code: string) {
 
 function addScript(scriptEl: HTMLScriptElement, location: string) {
     return new Promise<ThirdPartyCapitalState>((resolve) => {
+        // just checking for head or body right now..
         if (location === 'head') {
             document.head.appendChild(scriptEl);
         } else {
