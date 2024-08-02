@@ -2,28 +2,69 @@ import "./style.css";
 import Logo from "./assets/logo.png";
 
 import { useThirdPartyCapital } from "./hooks/useThirdPartyCapital";
-import type { GoogleAnalyticsApi } from "third-party-capital";
+import type { DataLayer } from "third-party-capital";
+// import { GooglaAnalyticsData} from "third-party-capital";
+
+// console.log("GooglaAnalyticsData", GooglaAnalyticsData);
+//console.log(typeof GooglaAnalyticsData);
 
 declare global {
-    interface Window extends GoogleAnalyticsApi {}
+    interface Window {
+        ["GADataLayer"]: DataLayer;
+        ["GTMDataLayer"]: DataLayer;
+        dataLayer: DataLayer;
+    }
 }
 
 const App = () => {
     const { getStatus } = useThirdPartyCapital({ 
         type: "ga", 
-        id: "G-MMQSNF1HQ5", 
+        // id: "G-MMQSNF1HQ5", 
+        id: "G-FSH19SFZRN",
+        // l: "GADataLayer",
+        l: "dataLayer",
         onSuccess: () => {
+            console.log("ga success")
             state.textContent = `Current state: ${getStatus()}`;
-            window.gtag('event', 'newsletter_signup', {
+            /* window.gtag('event', 'newsletter_signup', {
                 'time': new Date(),
             });
             window.gtag("event", "sign_up", {timestamp: Date.now()});
-            window.gtag("event", "login");
-            window.gtag("event", "something_random", {"favorite_fod": "ramen"})
+            window.gtag("event", "something_random", {"favorite_fod": "ramen"}) */
+            // const dataLayer = window["GADataLayer"];
+            const dataLayer = window.dataLayer;
+            dataLayer.push({"event": 'event_name'});
+
+            dataLayer.push({"event": "food choices", "favorite_fod": "ramen" });
         }, 
         onError: () => {
             state.textContent = `Current state: ${getStatus()}`;
         }
+    });
+
+    useThirdPartyCapital({
+        type: "gtm",
+        id: "GTM-K3R4C5LX",
+        l: "GTMDataLayer",
+        onSuccess: () => {
+            console.log("gtm success")
+            const dataLayer = window["GTMDataLayer"];
+            dataLayer.push({"event": "login"})
+        },
+        onError: () => console.log("gtm error")
+    });
+
+    useThirdPartyCapital({
+        type: "gme",
+        key: "AIzaSyCFj8Vni52FfC9L1zpzxqH3ViUPmioa-Dw",
+        q: "Brooklyn+Bridge,New+York,NY",
+        mode: "place"
+    })
+
+    useThirdPartyCapital({ 
+        type: "yt", 
+        videoid: "gF8Nkzzr900",
+        playlabel: "play"
     });
 
     // fluff
