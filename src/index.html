@@ -17,7 +17,10 @@
 
     gtag('config', 'G-FSH19SFZRN');
     gtag('event', 'fuzz');
-    window.dataLayer.push({'event': 'bar'});
+
+    function gtagFN(){console.log(arguments);dataLayer.push(arguments);}
+    window.gtagFN = gtagFN;
+    gtagFN('event', 'yyyyyes');
     </script>
 </head>
 <body>
