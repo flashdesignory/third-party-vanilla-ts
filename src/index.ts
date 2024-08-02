@@ -35,7 +35,7 @@ const App = () => {
 
             // dataLayer.push({"event": "food choices", "favorite_fod": "ramen" });
             console.log(window['gtag-GADataLayer'])
-            window['gtag-GADataLayer']('event', 'vanilla-js-fosho')
+            window['gtag-GADataLayer']('event', 'vanilla-js-fosho!')
         }, 
         onError: () => {
             state.textContent = `Current state: ${getStatus()}`;
