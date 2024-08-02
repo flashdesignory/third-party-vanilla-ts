@@ -16,7 +16,8 @@
     gtag('js', new Date());
 
     gtag('config', 'G-FSH19SFZRN');
-    gtag('event', 'foo', { 'triggered': new Date()});
+    gtag('event', 'foo');
+    window.dataLayer.push('event', 'bar');
     </script>
 </head>
 <body>
