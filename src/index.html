@@ -12,11 +12,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSH19SFZRN"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag(){console.log(arguments);dataLayer.push(arguments);}
     gtag('js', new Date());
 
     gtag('config', 'G-FSH19SFZRN');
-    gtag('event', 'foo');
+    gtag('event', 'fuzz');
     window.dataLayer.push({'event': 'bar'});
     </script>
 </head>
