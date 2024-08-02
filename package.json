@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "http-server": "^14.1.1",
-    "third-party-capital": "^2.1.1"
+    "third-party-capital": "file:../third-party-capital"
   }
 }

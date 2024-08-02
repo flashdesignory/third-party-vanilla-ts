@@ -2,7 +2,7 @@ import "./style.css";
 import Logo from "./assets/logo.png";
 
 import { useThirdPartyCapital } from "./hooks/useThirdPartyCapital";
-import type { DataLayer } from "third-party-capital";
+import type { DataLayer, GTag } from "third-party-capital";
 // import { GooglaAnalyticsData} from "third-party-capital";
 
 // console.log("GooglaAnalyticsData", GooglaAnalyticsData);
@@ -12,12 +12,35 @@ declare global {
     interface Window {
         ["GADataLayer"]: DataLayer;
         ["GTMDataLayer"]: DataLayer;
-        dataLayer: DataLayer;
+        ["gtag-GADataLayer"]: GTag
     }
 }
 
 const App = () => {
-   
+    const { getStatus } = useThirdPartyCapital({ 
+        type: "ga", 
+        // id: "G-MMQSNF1HQ5", 
+        id: "G-FSH19SFZRN",
+        l: "GADataLayer",
+        onSuccess: () => {
+            console.log("ga success")
+            state.textContent = `Current state: ${getStatus()}`;
+            /* window.gtag('event', 'newsletter_signup', {
+                'time': new Date(),
+            });
+            window.gtag("event", "sign_up", {timestamp: Date.now()});
+            window.gtag("event", "something_random", {"favorite_fod": "ramen"}) */
+            // const dataLayer = window["GADataLayer"];
+            // dataLayer.push({"event": 'event_name'});
+
+            // dataLayer.push({"event": "food choices", "favorite_fod": "ramen" });
+            console.log(window['gtag-GADataLayer'])
+            window['gtag-GADataLayer']('event', 'vanilla-js-fosho')
+        }, 
+        onError: () => {
+            state.textContent = `Current state: ${getStatus()}`;
+        }
+    });
 
     useThirdPartyCapital({
         type: "gtm",
@@ -55,7 +78,7 @@ const App = () => {
 
     const state = document.createElement("div");
     state.classList.add("state");
-    // state.textContent = `Current state: ${getStatus()}`;
+    state.textContent = `Current state: ${getStatus()}`;
     div.append(state); 
 
     const myLogo = new Image();
