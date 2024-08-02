@@ -17,30 +17,7 @@ declare global {
 }
 
 const App = () => {
-    const { getStatus } = useThirdPartyCapital({ 
-        type: "ga", 
-        // id: "G-MMQSNF1HQ5", 
-        id: "G-FSH19SFZRN",
-        // l: "GADataLayer",
-        l: "dataLayer",
-        onSuccess: () => {
-            console.log("ga success")
-            state.textContent = `Current state: ${getStatus()}`;
-            /* window.gtag('event', 'newsletter_signup', {
-                'time': new Date(),
-            });
-            window.gtag("event", "sign_up", {timestamp: Date.now()});
-            window.gtag("event", "something_random", {"favorite_fod": "ramen"}) */
-            // const dataLayer = window["GADataLayer"];
-            const dataLayer = window.dataLayer;
-            dataLayer.push({"event": 'event_name'});
-
-            dataLayer.push({"event": "food choices", "favorite_fod": "ramen" });
-        }, 
-        onError: () => {
-            state.textContent = `Current state: ${getStatus()}`;
-        }
-    });
+   
 
     useThirdPartyCapital({
         type: "gtm",
