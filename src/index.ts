@@ -55,7 +55,7 @@ const App = () => {
 
     const state = document.createElement("div");
     state.classList.add("state");
-    state.textContent = `Current state: ${getStatus()}`;
+    // state.textContent = `Current state: ${getStatus()}`;
     div.append(state); 
 
     const myLogo = new Image();
