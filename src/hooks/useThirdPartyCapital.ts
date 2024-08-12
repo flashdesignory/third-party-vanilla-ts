@@ -1,6 +1,6 @@
 import { GoogleAnalytics, GoogleMapsEmbed, GoogleTagManager, YouTubeEmbed, isExternalScript } from "third-party-capital";
 import type { Script } from "third-party-capital";
-import { requestIdleCallback } from "../utils/requestIdleCallback";
+import { loadScript } from "../utils/script-loader";
 
 type ThirdPartyCapitalProps = {
     type: string;
@@ -15,62 +15,21 @@ type ThirdPartyCapitalProps = {
     l?: string;
 }
 
-type ThirdPartyCapitalState = {
-    success: boolean;
-    type: "loadScript" | "buildScript" | "addScript" | "all";
-    l?: string;
-}
-
-function loadScript(scriptEl: HTMLScriptElement, url: string) {
-    return new Promise<ThirdPartyCapitalState>((resolve, reject) => {
-      scriptEl.onload = () => resolve({success: true, type: "loadScript"});
-      scriptEl.onerror = () => reject({success: false, type: "loadScript"});
-
-      // client / afterInteractive:
-      // scriptEl.setAttribute('src', url);
-      
-      // idle / lazyonload:
-      requestIdleCallback(() => scriptEl.setAttribute('src', url));
-    });
-}
-
-function buildScript(scriptEl: HTMLScriptElement, code: string) {
-    return new Promise<ThirdPartyCapitalState>((resolve) => {
-        scriptEl.textContent = code;
-        return resolve({ success: true, type: "buildScript"});
-    });
-}
-
-function addScript(scriptEl: HTMLScriptElement, location: string) {
-    return new Promise<ThirdPartyCapitalState>((resolve) => {
-        // just checking for head or body right now..
-        if (location === 'head') {
-            document.head.appendChild(scriptEl);
-        } else {
-            document.body.appendChild(scriptEl);
-        }
-        return resolve({ success: true, type: "addScript"});
-    });
-}
-
 async function initGoogleAnalytics(id: string, l: string) {
     const ga = GoogleAnalytics({ id, l });
     console.log("ga", ga);
     const promisesToResolve = [];
     for(let i = 0; i < ga.scripts.length; i++) {
         const script:Script = ga.scripts[i];
-        const scriptEl = document.createElement('script');
-        promisesToResolve.push(addScript(scriptEl, script.location));
         if (isExternalScript(script)) {
-            // what's the strategy?
-            promisesToResolve.push(loadScript(scriptEl, script.url));
+            promisesToResolve.push(loadScript({ id: script.key, url: script.url, strategy: "lazyOnLoad" }));
         } else {
-            promisesToResolve.push(buildScript(scriptEl, script.code));
+            promisesToResolve.push(loadScript({ id: script.key, code: script.code }));
         }
     }
 
     return Promise.all(promisesToResolve).then((values) => {
-        console.log(values);
+        console.log("values", values);
         return ({ success: true, type: "all", l });
     });
 }
@@ -82,18 +41,15 @@ async function initGoogleTagManager(id: string, l:string) {
     const promisesToResolve = [];
     for(let i = 0; i < gtm.scripts.length; i++) {
         const script:Script = gtm.scripts[i];
-        const scriptEl = document.createElement('script');
-        promisesToResolve.push(addScript(scriptEl, script.location));
         if (isExternalScript(script)) {
-            // what's the strategy?
-            promisesToResolve.push(loadScript(scriptEl, script.url));
+            promisesToResolve.push(loadScript({ id: script.key, url: script.url, strategy: "lazyOnLoad" }));
         } else {
-            promisesToResolve.push(buildScript(scriptEl, script.code));
+            promisesToResolve.push(loadScript({ id: script.key, code: script.code }));
         }
     }
 
     return Promise.all(promisesToResolve).then((values) => {
-        console.log(values);
+        console.log("values", values);
         return ({ success: true, type: "all", l });
     });
 }

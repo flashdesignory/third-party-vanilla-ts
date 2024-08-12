@@ -3,9 +3,9 @@ import Logo from "./assets/logo.png";
 
 import { useThirdPartyCapital } from "./hooks/useThirdPartyCapital";
 import type { DataLayer, GTag } from "third-party-capital";
-// import { GooglaAnalyticsData} from "third-party-capital";
+import { GooglaAnalyticsData} from "third-party-capital";
 
-// console.log("GooglaAnalyticsData", GooglaAnalyticsData);
+console.log("GooglaAnalyticsData", GooglaAnalyticsData);
 //console.log(typeof GooglaAnalyticsData);
 
 declare global {
@@ -35,7 +35,7 @@ const App = () => {
 
             // dataLayer.push({"event": "food choices", "favorite_fod": "ramen" });
             console.log(window['gtag-GADataLayer'])
-            window['gtag-GADataLayer']('event', 'vanilla-js-fosho!')
+            window['gtag-GADataLayer']('event', 'vanilla-js-fosho!!')
         }, 
         onError: () => {
             state.textContent = `Current state: ${getStatus()}`;
