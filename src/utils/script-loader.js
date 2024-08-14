@@ -49,11 +49,12 @@ export async function loadScript({ id, url = "", code = "", type = "", strategy 
     await addScript({scriptEl, location});
 
     if (code !== "") {
-        // add inline code to script element
-        await buildScript({scriptEl, code}).then(() => onSuccess?.()).catch(() => onError?.());
+        await buildScript({scriptEl, code});
+        onSuccess?.();
     } else {
         // load external url
-        await initScript({scriptEl, url, strategy}).then(() => onSuccess?.()).catch(() => onError?.());
+        const {success} = await initScript({scriptEl, url, strategy});
+        success ? onSuccess?.() : onError?.();
     }
 
     return ({ success: true, type: "loadScript", id});

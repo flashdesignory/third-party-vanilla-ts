@@ -22,9 +22,9 @@ async function initGoogleAnalytics(id: string, l: string) {
     for(let i = 0; i < ga.scripts.length; i++) {
         const script:Script = ga.scripts[i];
         if (isExternalScript(script)) {
-            promisesToResolve.push(loadScript({ id: script.key, url: script.url, strategy: "lazyOnLoad" }));
+            promisesToResolve.push(loadScript({ id: script.key, url: script.url, strategy: "lazyOnLoad", onSuccess: () => console.log("done loading script", script.key) }));
         } else {
-            promisesToResolve.push(loadScript({ id: script.key, code: script.code }));
+            promisesToResolve.push(loadScript({ id: script.key, code: script.code, onSuccess: () => console.log("done building script", script.key) }));
         }
     }
 
@@ -42,9 +42,9 @@ async function initGoogleTagManager(id: string, l:string) {
     for(let i = 0; i < gtm.scripts.length; i++) {
         const script:Script = gtm.scripts[i];
         if (isExternalScript(script)) {
-            promisesToResolve.push(loadScript({ id: script.key, url: script.url, strategy: "lazyOnLoad" }));
+            promisesToResolve.push(loadScript({ id: script.key, url: script.url, strategy: "lazyOnLoad", onSuccess: () => console.log("done loading script", script.key) }));
         } else {
-            promisesToResolve.push(loadScript({ id: script.key, code: script.code }));
+            promisesToResolve.push(loadScript({ id: script.key, code: script.code, onSuccess: () => console.log("done building script", script.key) }));
         }
     }
 
