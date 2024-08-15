@@ -19,39 +19,36 @@ async function initGoogleAnalytics(id: string, l: string) {
     const ga = GoogleAnalytics({ id, l });
     console.log("ga", ga);
     const promisesToResolve = [];
+
     for(let i = 0; i < ga.scripts.length; i++) {
         const script:Script = ga.scripts[i];
         if (isExternalScript(script)) {
-            promisesToResolve.push(loadScript({ id: script.key, url: script.url, strategy: "lazyOnLoad", onSuccess: () => console.log("done loading script", script.key) }));
+            promisesToResolve.push(loadScript({ url: script.url, strategy: "lazyOnLoad" }));
         } else {
-            promisesToResolve.push(loadScript({ id: script.key, code: script.code, onSuccess: () => console.log("done building script", script.key) }));
+            promisesToResolve.push(loadScript({ code: script.code }));
         }
     }
 
-    return Promise.all(promisesToResolve).then((values) => {
-        console.log("values", values);
-        return ({ success: true, type: "all", l });
-    });
+    await Promise.all(promisesToResolve);
+    return ({ success: true, type: "all", l });
 }
 
 async function initGoogleTagManager(id: string, l:string) {
     const gtm = GoogleTagManager({ id, l });
     console.log("gtm", gtm);
-    // return ({ success: true, type: "all" });
     const promisesToResolve = [];
+
     for(let i = 0; i < gtm.scripts.length; i++) {
         const script:Script = gtm.scripts[i];
         if (isExternalScript(script)) {
-            promisesToResolve.push(loadScript({ id: script.key, url: script.url, strategy: "lazyOnLoad", onSuccess: () => console.log("done loading script", script.key) }));
+            promisesToResolve.push(loadScript({ url: script.url, strategy: "lazyOnLoad" }));
         } else {
-            promisesToResolve.push(loadScript({ id: script.key, code: script.code, onSuccess: () => console.log("done building script", script.key) }));
+            promisesToResolve.push(loadScript({ code: script.code }));
         }
     }
 
-    return Promise.all(promisesToResolve).then((values) => {
-        console.log("values", values);
-        return ({ success: true, type: "all", l });
-    });
+    await Promise.all(promisesToResolve);
+    return ({ success: true, type: "all", l });
 }
 
 async function initGoogleMapsEmbed({ key, mode, q }: { key: string, mode: string, q: string }) {
